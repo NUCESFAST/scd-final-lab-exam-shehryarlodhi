@@ -1,0 +1,64 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  auth:
+    build:
+      context: ./Auth
+      dockerfile: Dockerfile
+    ports:
+      - "3771:3771"
+    networks:
+      - eduhub-network
+
+  classrooms:
+    build:
+      context: ./Classrooms
+      dockerfile: Dockerfile
+    ports:
+      - "3772:3772"
+    networks:
+      - eduhub-network
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "1771:1771"
+    networks:
+      - eduhub-network
+
+  event-bus:
+    build:
+      context: ./event-bus
+      dockerfile: Dockerfile
+    ports:
+      - "3773:3773"
+    networks:
+      - eduhub-network
+
+  post:
+    build:
+      context: ./Post
+      dockerfile: Dockerfile
+    ports:
+      - "3774:3774"
+    networks:
+      - eduhub-network
+
+  db:
+    image: mongo:4.4
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - eduhub-network
+
+networks:
+  eduhub-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
